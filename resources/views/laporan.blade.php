@@ -137,7 +137,7 @@
 <script>
   function cetakLaporan() {
       document.getElementById('laporan').style.display = 'block';
-      const WinPrint = window.open('', 'Struk Nota Menus Apps', 'left=0,top=0,width=800,height=400,toolbar=0,scrollbars=0,status=0');
+      const WinPrint = window.open('', 'Cetak Laporan', 'left=0,top=0,width=800,height=400,toolbar=0,scrollbars=0,status=0');
         if (WinPrint) {
             WinPrint.document.write(`
                 <html>
