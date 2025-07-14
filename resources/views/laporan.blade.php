@@ -48,7 +48,36 @@
             tabindex="0"
           >
 
+          <button 
+            id="print-button" 
+            onclick="cetakLaporan()"
+            style="background:blue; color:#fff; border:none; border-radius:5px;"
+          >Print</button>
           
+          <div id="laporan" style="display: none;">
+            <h4>Laporan E-Pasien</h4>
+            <hr style="border: 1px solid #000; margin-top: 1mm;">
+            @foreach( $konsuls as $k)
+                <b>Nomor antrian : </b> {{ $k->nomor_antrian }} <br>
+                <b>Nama Pasien : </b> {{ $k->nama_pasien }} <br>
+                <b>Email Pasien : </b> {{ $k->email_pasien }} <br>
+                <b>Keterangan Konsul : </b> {{ $k->keterangan_konsul }} <br>
+                <b>Saran : </b> {{ $k->saran }} <br>
+                <b>Informasi : </b> {{ $k->informasi }} <br> 
+                <hr style="border: 1px solid #000; margin-top: 1mm;">
+
+                <b>Resep Obat : </b> <br>
+                @foreach( $k->reseps as $rk)                  
+                    {{ $rk->nama_obat }} <br>
+                    {{ $rk->stok }} <br>
+                    {{ $rk->keterangan_obat }} <br>
+                    {{ $rk->keterangan_obat_resep }}
+                  
+                @endforeach
+                <hr style="border: 1px solid #000; margin-top: 1mm;">
+            @endforeach
+          </div>
+
           <div 
             style="		
             display:flex;
@@ -57,6 +86,7 @@
             overflow-y:hidden;
             white-space:nowrap;
           ">
+
 
           @foreach( $konsuls as $k)
               <div class="m-1 p-2" 
@@ -103,3 +133,43 @@
     </div>
 
   <script type="text/javascript" src="{{ asset('js/alert-hidden.js')}}"></script>
+
+<script>
+  function cetakLaporan() {
+      document.getElementById('laporan').style.display = 'block';
+      const WinPrint = window.open('', 'Struk Nota Menus Apps', 'left=0,top=0,width=800,height=400,toolbar=0,scrollbars=0,status=0');
+        if (WinPrint) {
+            WinPrint.document.write(`
+                <html>
+                    <head>
+                        <title>Struk Nota</title>
+                        <style>
+                            @page {
+                                size: 58mm 210mm;
+                                margin: 0;
+                            }
+                            body {
+                                width: 58mm;
+                                height: 210mm;
+                                margin: 0;
+                                padding: 0;
+                                font-size: 10pt;
+                                font-family: Arial;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        ${laporan.innerHTML}
+                    </body>
+                </html>
+            `);
+            WinPrint.document.close();
+            WinPrint.focus();
+            WinPrint.print();
+            WinPrint.close();
+        } else {
+            console.error('Gagal membuka jendela baru');
+        }
+    }
+
+</script>
